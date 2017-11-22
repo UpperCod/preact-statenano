@@ -1,4 +1,4 @@
-#preact-statenano
+# preact-statenano
 
 es una pequeña librería que permite sincronizar los eventos del estado creados a base de StateNano con componentes creados con preact todo  gracias a los componentes de alto orden.
 

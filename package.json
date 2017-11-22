@@ -1,0 +1,27 @@
+{
+  "name": "preact-statenano",
+  "version": "0.0.5",
+  "description": "small component for preact to control the state of an application with StateNano",
+  "main": "index.js",
+  "module": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c",
+    "dev": "rollup -c -w"
+  },
+  "keywords": [
+    "preact"
+  ],
+  "author": "Matias Trujillo",
+  "license": "ISC",
+  "devDependencies": {
+    "preact": "^8.2.6",
+    "rollup": "^0.45.2",
+    "rollup-plugin-buble": "^0.17.0",
+    "rollup-plugin-commonjs": "^8.0.2",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-postcss": "^0.5.5",
+    "rollup-watch": "^4.3.1",
+    "statenano": "^0.0.5"
+  }
+}

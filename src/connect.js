@@ -27,12 +27,8 @@ export default function connect(...states){
             componentWillUnmount(){
                 ( this.unsubscribers || [] ).map((unsubscribe)=> unsubscribe())
             }
-            createNextProps(props){
-              props.state = map(this.state);
-              return props;
-            }
-            render(props,state){
-              return <Child {...this.createNextProps(props)}>{props.children}</Child>
+            render(props){
+                return <Child {...{...props,state:map(this.state,props)}}>{props.children}</Child>
             }
             static with(nextChild){
               Child = nextChild;

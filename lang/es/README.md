@@ -46,7 +46,7 @@ function Todo({state}){
    return <h1>Todo!</h1>
 }
 
-return connect('todo').with(Todo).map({todo}=>todo)
+return connect('todo').with(Todo).map(({todo},props)=>todo)
 
 ```
 

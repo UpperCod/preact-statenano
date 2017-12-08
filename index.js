@@ -46,12 +46,8 @@ function connect(){
             Connect.prototype.componentWillUnmount = function componentWillUnmount (){
                 ( this.unsubscribers || [] ).map(function (unsubscribe){ return unsubscribe(); });
             };
-            Connect.prototype.createNextProps = function createNextProps (props){
-              props.state = map(this.state);
-              return props;
-            };
-            Connect.prototype.render = function render (props,state){
-              return preact.h( Child, this.createNextProps(props), props.children)
+            Connect.prototype.render = function render (props){
+                return preact.h( Child, Object.assign({}, props,{state:map(this.state,props)}), props.children)
             };
             Connect.with = function with$1 (nextChild){
               Child = nextChild;

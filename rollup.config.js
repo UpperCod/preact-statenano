@@ -23,6 +23,7 @@ export default {
     }),
     buble({
       jsx: 'h',
+      objectAssign:'Object.assign'
     }),
   ]
 }

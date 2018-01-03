@@ -1,5 +1,4 @@
 import {h,Component} from 'preact';
-import StateNano from 'statenano';
 
 export default function connect(...states){
     let map   = (state)=>state,
@@ -13,7 +12,7 @@ export default function connect(...states){
                       select =  type === 'string' ? {name : state,state:provider[state]}:
                                 type === 'object' ? state : {}
                                 
-                  if( select.name && select.state instanceof StateNano ){
+                  if( select.name && select.state &&  'subscribe' in select.state ){
                       nextState[select.name] = select.state;
                       return select.state.subscribe((next)=>{
                         this.setState({[select.name]:next})

@@ -1,6 +1,6 @@
 {
   "name": "preact-statenano",
-  "version": "0.0.7",
+  "version": "0.0.9",
   "description": "small component for preact to control the state of an application with StateNano",
   "main": "index.js",
   "module": "index.js",
@@ -25,7 +25,6 @@
     "rollup-plugin-commonjs": "^8.0.2",
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-postcss": "^0.5.5",
-    "rollup-watch": "^4.3.1",
     "statenano": "^0.0.5"
   }
 }

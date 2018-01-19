@@ -1,9 +1,12 @@
 {
   "name": "preact-statenano",
-  "version": "0.1.0",
+  "version": "0.1.4",
   "description": "small component for preact to control the state of an application with StateNano",
-  "main": "index.js",
-  "module": "index.js",
+  "main": "build/cjs.js",
+  "module": "build/cjs.js",
+  "umd:main": "build/umd.js",
+  "jsnext:main": "build/cjs.js",
+  "source": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rollup -c",
@@ -26,5 +29,8 @@
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-postcss": "^0.5.5",
     "statenano": "^0.0.5"
+  },
+  "peerDependencies": {
+    "preact": "*"
   }
 }

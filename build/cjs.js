@@ -4,90 +4,115 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var preact = require('preact');
 
-function connect(){
+var Subscribe = (function (Component) {
+    function Subscribe () {
+        Component.apply(this, arguments);
+    }
+
+    if ( Component ) Subscribe.__proto__ = Component;
+    Subscribe.prototype = Object.create( Component && Component.prototype );
+    Subscribe.prototype.constructor = Subscribe;
+
+    Subscribe.prototype.componentWillMount = function componentWillMount () {
+        var this$1 = this;
+
+        var nextState = {},
+            provider =
+                "provider" in this.context ? this.context.provider : {};
+        this.unsubscribers = this.states.map(function (state) {
+            var type = typeof state,
+                select =
+                    type === "string"
+                        ? { name: state, state: provider[state] }
+                        : type === "object" ? state : {};
+
+            if (
+                select.name &&
+                select.state &&
+                "subscribe" in select.state
+            ) {
+                nextState[select.name] = select.state;
+                return select.state.subscribe(function (next) {
+                    this$1.setState(( obj = {}, obj[select.name] = next, obj));
+                    var obj;
+                });
+            } else {
+                throw (state + " it is not a valid state");
+            }
+        });
+        this.setState(nextState);
+    };
+    Subscribe.prototype.componentWillUnmount = function componentWillUnmount () {
+        (this.unsubscribers || []).map(function (unsubscribe) { return unsubscribe(); });
+    };
+
+    return Subscribe;
+}(preact.Component));
+
+function connect() {
     var states = [], len = arguments.length;
     while ( len-- ) states[ len ] = arguments[ len ];
 
-    var map   = function (state){ return state; },
-        Child = function (){},
-        Connect = (function (Component$$1) {
-        function Connect () {
-            Component$$1.apply(this, arguments);
-        }
+    var map,
+        Child,
+        Connect = (function (Subscribe) {
+        function Connect(){
+                Subscribe.call(this);
+                this.states = states;
+            }
 
-        if ( Component$$1 ) Connect.__proto__ = Component$$1;
-        Connect.prototype = Object.create( Component$$1 && Component$$1.prototype );
+        if ( Subscribe ) Connect.__proto__ = Subscribe;
+        Connect.prototype = Object.create( Subscribe && Subscribe.prototype );
         Connect.prototype.constructor = Connect;
-
-        Connect.prototype.componentWillMount = function componentWillMount (){
-                var this$1 = this;
-
-                var nextState = {},
-                    provider  = 'provider' in this.context ? this.context.provider : {}; 
-                this.unsubscribers = states.map(function (state){
-                  var type   = typeof state,
-                      select =  type === 'string' ? {name : state,state:provider[state]}:
-                                type === 'object' ? state : {};
-                                
-                  if( select.name && select.state &&  'subscribe' in select.state ){
-                      nextState[select.name] = select.state;
-                      return select.state.subscribe(function (next){
-                        this$1.setState(( obj = {}, obj[select.name] = next, obj));
-                        var obj;
-                      });
-                  }else{
-                    throw (state + " it is not a valid state");
-                  }
-                });
-                this.setState(nextState);
+            Connect.prototype.render = function render (props) {
+                var state = map && map(this.state, props);
+                return (
+                    Child &&
+                    state && (
+                        preact.h( Child, Object.assign({}, props, {state: state}))
+                    )
+                );
             };
-            Connect.prototype.componentWillUnmount = function componentWillUnmount (){
-                ( this.unsubscribers || [] ).map(function (unsubscribe){ return unsubscribe(); });
+            Connect.with = function with$1 (nextChild) {
+                Child = nextChild;
+                return this;
             };
-            Connect.prototype.render = function render ( props ){
-                var state = map(this.state,props);
-                return state && preact.h( Child, Object.assign({}, props,{state: state}), props.children);
-            };
-            Connect.with = function with$1 (nextChild){
-              Child = nextChild;
-              return this;
-            };
-            Connect.map = function map$1 (nextMap){
-              map = nextMap;
-              return this;
+            Connect.map = function map$1 (nextMap) {
+                map = nextMap;
+                return this;
             };
 
         return Connect;
-    }(preact.Component));
+    }(Subscribe));
     return Connect;
 }
 
-var Provider = (function (Component$$1) {
-  function Provider () {
-    Component$$1.apply(this, arguments);
-  }
+var Provider = (function (Component) {
+    function Provider () {
+        Component.apply(this, arguments);
+    }
 
-  if ( Component$$1 ) Provider.__proto__ = Component$$1;
-  Provider.prototype = Object.create( Component$$1 && Component$$1.prototype );
-  Provider.prototype.constructor = Provider;
+    if ( Component ) Provider.__proto__ = Component;
+    Provider.prototype = Object.create( Component && Component.prototype );
+    Provider.prototype.constructor = Provider;
 
-  Provider.prototype.getChildContext = function getChildContext (){
+    Provider.prototype.getChildContext = function getChildContext () {
         var this$1 = this;
 
         var provider = {};
-        Object.keys(this.props).map(function (prop){
-            if( prop === 'children'){ return; }
+        Object.keys(this.props).map(function (prop) {
+            if (prop === "children") { return; }
             provider[prop] = this$1.props[prop];
         });
-        return {provider: provider};
+        return { provider: provider };
     };
-    Provider.prototype.render = function render (ref){
-      var children = ref.children;
+    Provider.prototype.render = function render (ref) {
+        var children = ref.children;
 
-      return children[0]
+        return children[0];
     };
 
-  return Provider;
+    return Provider;
 }(preact.Component));
 
 exports.connect = connect;

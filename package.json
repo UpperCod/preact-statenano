@@ -1,6 +1,6 @@
 {
   "name": "preact-statenano",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "small component for preact to control the state of an application with StateNano",
   "main": "build/cjs.js",
   "module": "build/cjs.js",
